@@ -3,6 +3,7 @@ import {useEffect, useState} from "react";
 
 function EditPokemon() {
     const params = useParams();
+
     const navigate = useNavigate();
 
     const [editPokemon, setEditPokemon] = useState(null);
@@ -15,6 +16,7 @@ function EditPokemon() {
         });
     };
 
+    // Send the updated Pokémon data to the backend
     const handleEditSubmit = async (event) => {
         event.preventDefault();
 
@@ -32,6 +34,7 @@ function EditPokemon() {
                 }),
             });
 
+            // Get the updated Pokémon and go back to the details page
             const data = await response.json();
             console.log("Form submitted", data);
             navigate(`/pokemon/${data.id}`);
@@ -40,6 +43,7 @@ function EditPokemon() {
         }
     };
 
+    // Load the current Pokémon values into the form
     const loadEditPokemon = async (id) => {
         try {
             const result = await fetch(`http://localhost:3000/pokemon/${id}`, {
@@ -49,11 +53,13 @@ function EditPokemon() {
                 },
             });
 
+
             if (result.status === 404) {
                 navigate("/not-found", {replace: true});
                 return;
             }
 
+            // Save the current Pokémon data in state
             const data = await result.json();
             setEditPokemon(data);
             console.log(data);
@@ -63,9 +69,11 @@ function EditPokemon() {
         }
     };
 
+
     useEffect(() => {
         loadEditPokemon(params.id);
     }, [params.id]);
+
 
     if (!editPokemon) {
         return <p>Loading...</p>;

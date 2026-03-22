@@ -2,30 +2,20 @@ import {useEffect, useState} from "react";
 import Pokemon from "./Pokemon.jsx";
 
 function PokemonList() {
-    // Stores the list of Pokémon returned by the backend
     const [pokemons, setPokemons] = useState(null);
 
-    // Stores the text typed into the search field
     const [searchTerm, setSearchTerm] = useState("");
 
-    // Stores the selected Pokémon type from the dropdown
     const [selectedType, setSelectedType] = useState("");
 
-    // Function to load Pokémon from the backend
-    // It also sends search and type filters as query parameters
     const loadPokemons = async () => {
         try {
-            // Create URLSearchParams so we can build query strings easily
             const params = new URLSearchParams();
 
-            // If the user typed something in the search field,
-            // add it to the URL as ?search=...
             if (searchTerm) {
                 params.append("search", searchTerm);
             }
 
-            // If the user selected a type,
-            // add it to the URL as ?type=...
             if (selectedType) {
                 params.append("type", selectedType);
             }
@@ -39,8 +29,6 @@ function PokemonList() {
                 },
             });
 
-            // If no Pokémon are found, set an empty array
-            // so the page can still render nicely
             if (!result.ok) {
                 setPokemons([]);
                 return;
@@ -55,8 +43,6 @@ function PokemonList() {
         }
     };
 
-    // Runs when the page first loads
-    // and again whenever searchTerm or selectedType changes
     useEffect(() => {
         loadPokemons();
     }, [searchTerm, selectedType]);

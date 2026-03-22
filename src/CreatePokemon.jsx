@@ -4,11 +4,13 @@ import {useNavigate} from "react-router";
 function CreatePokemon() {
     const navigate = useNavigate();
 
+
     const [formData, setFormData] = useState({
         name: "",
         type: "",
         pokedexDescription: "",
     });
+
 
     const handleInputChange = (e) => {
         const {name, value} = e.target;
@@ -18,6 +20,7 @@ function CreatePokemon() {
         });
     };
 
+    // create with Post
     const handleSubmit = async (event) => {
         event.preventDefault();
 
@@ -41,7 +44,7 @@ function CreatePokemon() {
 
             const result = await response.json();
             console.log("New Pokémon created:", result);
-            navigate("/pokemon"); // Back to Pokémon list
+            navigate("/pokemon");
         } catch (error) {
             console.error("An error occurred", error);
         }

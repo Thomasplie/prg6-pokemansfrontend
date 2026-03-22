@@ -3,10 +3,12 @@ import {Link, useNavigate, useParams} from "react-router";
 
 function DetailsPokemon() {
     const params = useParams();
+
     const navigate = useNavigate();
 
     const [details, setDetails] = useState(null);
 
+    // Delete
     const deletePokemon = async (id) => {
         try {
             await fetch(`http://localhost:3000/pokemon/${id}`, {
@@ -16,13 +18,14 @@ function DetailsPokemon() {
                 },
             });
 
-            // Go back to the main Pokémon list
+            // Go back to the Pokémon list after deleting
             navigate("/pokemon");
         } catch (e) {
             console.log(e);
         }
     };
 
+    // Load the details of one Pokémon from the backend
     const loadDetails = async (id) => {
         try {
             const result = await fetch(`http://localhost:3000/pokemon/${id}`, {
@@ -41,6 +44,7 @@ function DetailsPokemon() {
                 throw new Error(`HTTP error! status: ${result.status}`);
             }
 
+            // Save the Pokémon details in state
             const data = await result.json();
             setDetails(data);
             console.log(data);
@@ -50,6 +54,7 @@ function DetailsPokemon() {
         }
     };
 
+    // Load the details when the page opens or when the id changes
     useEffect(() => {
         loadDetails(params.id);
     }, [params.id]);
@@ -71,12 +76,15 @@ function DetailsPokemon() {
                     </p>
 
                     <div className="flex row gap-1.5 pt-6">
+                        {/* Go to the edit page */}
                         <Link
                             to={`/editPokemon/${details.id}`}
                             className="inline-flex items-center justify-center bg-blue-600 hover:bg-blue-700 text-white font-semibold px-6 py-2 rounded-lg transition-colors duration-200"
                         >
                             EDIT
                         </Link>
+
+                        {/* Delete the Pokémon */}
                         <button
                             onClick={() => deletePokemon(details.id)}
                             className="inline-flex items-center justify-center bg-red-600 hover:bg-red-700 text-white font-semibold px-6 py-2 rounded-lg transition-colors duration-200"
